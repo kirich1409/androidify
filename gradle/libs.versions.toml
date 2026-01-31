@@ -3,7 +3,7 @@
 appVersionCode = "10"
 appVersionName = "1.3.0"
 appVersionWearOffset = "60000000"
-agp = "8.13.1"
+agp = "9.0.0"
 bcpkixJdk18on = "1.83"
 core = "1.7.0"
 extensionsXr = "1.1.0"
