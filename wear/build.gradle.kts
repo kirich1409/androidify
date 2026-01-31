@@ -15,8 +15,6 @@
  */
 import java.io.ByteArrayOutputStream
 import java.util.regex.Pattern
-import org.gradle.api.attributes.Attribute
-import com.android.build.api.attributes.BuildTypeAttr
 
 plugins {
     alias(libs.plugins.androidify.androidApplication)
@@ -33,14 +31,16 @@ android {
         versionCode = libs.versions.appVersionWearOffset.get().toInt() + libs.versions.appVersionCode.get().toInt()
         versionName = libs.versions.appVersionName.get()
     }
+    // Use resolved paths (not Provider) for AGP 9 Sources API compatibility.
+    val buildDir = layout.buildDirectory.get().asFile
     sourceSets {
         getByName("release") {
-            assets.srcDirs(layout.buildDirectory.dir("intermediates/watchfaceAssets/release"))
-            res.srcDirs(layout.buildDirectory.file("generated/wfTokenRes/release/res/"))
+            assets.srcDirs(buildDir.resolve("intermediates/watchfaceAssets/release"))
+            res.srcDirs(buildDir.resolve("generated/wfTokenRes/release/res"))
         }
         getByName("debug") {
-            assets.srcDirs(layout.buildDirectory.dir("intermediates/watchfaceAssets/debug"))
-            res.srcDirs(layout.buildDirectory.file("generated/wfTokenRes/debug/res/"))
+            assets.srcDirs(buildDir.resolve("intermediates/watchfaceAssets/debug"))
+            res.srcDirs(buildDir.resolve("generated/wfTokenRes/debug/res"))
         }
     }
 }
@@ -50,28 +50,9 @@ configurations {
         isCanBeConsumed = false
         isCanBeResolved = true
     }
-
-    listOf("debug", "release").forEach { buildType ->
-        create("watchfaceApk${buildType.replaceFirstChar { it.uppercase() }}") {
-            isCanBeResolved = true
-            isCanBeConsumed = false
-
-            attributes {
-                attribute(
-                    Attribute.of(BuildTypeAttr::class.java),
-                    objects.named(BuildTypeAttr::class.java, buildType)
-                )
-                attribute(Attribute.of("artifactType", String::class.java), "apk")
-            }
-        }
-    }
 }
 
 dependencies {
-    configurations.matching { it.name.startsWith("watchfaceApk") }.all {
-        dependencies.add(project(":wear:watchface"))
-    }
-
     implementation(projects.wear.common)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.wear.compose.foundation)
@@ -95,11 +76,12 @@ dependencies {
 
 androidComponents.onVariants { variant ->
     val capsVariant = variant.name.replaceFirstChar { it.uppercase() }
-    val watchfaceApkConfig = configurations.getByName("watchfaceApk$capsVariant")
+    val watchfaceProject = project(":wear:watchface")
+    val watchfaceApkDir = watchfaceProject.layout.buildDirectory.dir("outputs/apk/${variant.name}")
 
     val copyWatchfaceApkTask = tasks.register<Copy>("copyWatchface${capsVariant}ApkToAssets") {
-        from(watchfaceApkConfig) {
-            // the resolved directory contains apk and output-metadata.json
+        dependsOn(":wear:watchface:assemble$capsVariant")
+        from(watchfaceApkDir) {
             include("*.apk")
         }
         into(layout.buildDirectory.dir("intermediates/watchfaceAssets/${variant.name}"))

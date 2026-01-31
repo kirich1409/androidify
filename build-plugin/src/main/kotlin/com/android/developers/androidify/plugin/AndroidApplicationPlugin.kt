@@ -14,7 +14,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
             apply(plugin = "com.android.application")
-            apply(plugin = "org.jetbrains.kotlin.android")
+            // AGP 9.0 built-in Kotlin (KGP 2.2.21 via root buildscript); kotlin.android incompatible with new DSL
             apply(plugin = "org.jetbrains.kotlin.plugin.compose")
 
             extensions.configure<ApplicationExtension> {

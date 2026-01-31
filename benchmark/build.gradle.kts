@@ -15,7 +15,6 @@
  */
 import com.android.build.api.dsl.ManagedVirtualDevice
 import org.gradle.kotlin.dsl.create
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 /*
  * Copyright 2025 The Android Open Source Project
@@ -34,7 +33,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
  */
 plugins {
     alias(libs.plugins.android.test)
-    alias(libs.plugins.kotlin.android)
+    // AGP 9.0 built-in Kotlin (kotlin.android not allowed with built-in Kotlin)
     alias(libs.plugins.baselineprofile)
 }
 
@@ -73,11 +72,7 @@ android {
     }
 }
 
-kotlin {
-    compilerOptions {
-        jvmTarget = JvmTarget.fromTarget(libs.versions.javaVersion.get())
-    }
-}
+// Kotlin jvmTarget follows Java version from compileOptions (AGP 9.0 built-in Kotlin).
 
 // This is the configuration block for the Baseline Profile plugin.
 // You can specify to run the generators on a managed devices or connected devices.

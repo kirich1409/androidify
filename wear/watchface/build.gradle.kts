@@ -39,5 +39,13 @@ android {
             isMinifyEnabled = true
         }
     }
+
+    // DwfValidation allows only a minimal set of files; exclude AGP/Kotlin metadata.
+    packaging {
+        resources {
+            excludes.add("META-INF/com/android/build/gradle/app-metadata.properties")
+            excludes.add("kotlin/**")
+        }
+    }
 }
 
