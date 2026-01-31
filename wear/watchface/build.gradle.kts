@@ -39,5 +39,10 @@ android {
             isMinifyEnabled = true
         }
     }
-}
 
+    packaging {
+        resources {
+            excludes.add("kotlin/**")
+        }
+    }
+}

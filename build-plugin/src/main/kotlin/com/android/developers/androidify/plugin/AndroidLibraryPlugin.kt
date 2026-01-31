@@ -14,8 +14,6 @@ class AndroidLibraryPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
             apply(plugin = "com.android.library")
-            apply(plugin = "org.jetbrains.kotlin.android")
-
             extensions.configure<LibraryExtension> {
                 compileOptions {
                     val javaVersion = JavaVersion.toVersion(getVersionByName("javaVersion"))

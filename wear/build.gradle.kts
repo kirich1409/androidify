@@ -35,12 +35,12 @@ android {
     }
     sourceSets {
         getByName("release") {
-            assets.srcDirs(layout.buildDirectory.dir("intermediates/watchfaceAssets/release"))
-            res.srcDirs(layout.buildDirectory.file("generated/wfTokenRes/release/res/"))
+            assets.srcDirs(layout.buildDirectory.dir("intermediates/watchfaceAssets/release").get().asFile)
+            res.srcDirs(layout.buildDirectory.dir("generated/wfTokenRes/release/res").get().asFile)
         }
         getByName("debug") {
-            assets.srcDirs(layout.buildDirectory.dir("intermediates/watchfaceAssets/debug"))
-            res.srcDirs(layout.buildDirectory.file("generated/wfTokenRes/debug/res/"))
+            assets.srcDirs(layout.buildDirectory.dir("intermediates/watchfaceAssets/debug").get().asFile)
+            res.srcDirs(layout.buildDirectory.dir("generated/wfTokenRes/debug/res").get().asFile)
         }
     }
 }
@@ -55,6 +55,7 @@ configurations {
         create("watchfaceApk${buildType.replaceFirstChar { it.uppercase() }}") {
             isCanBeResolved = true
             isCanBeConsumed = false
+            isTransitive = false
 
             attributes {
                 attribute(
