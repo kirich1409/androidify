@@ -20,6 +20,9 @@ buildscript {
     }
     dependencies {
         classpath(libs.google.oss.licenses.plugin)
+        // Pin Kotlin and KSP versions when using android.builtInKotlin=false with AGP 9.0
+        classpath(libs.kotlin.gradlePlugin)
+        classpath("com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:${libs.versions.ksp.get()}")
     }
 }
 
