@@ -61,8 +61,10 @@ dependencies {
     implementation(projects.data)
     implementation(projects.feature.results)
     testImplementation(libs.hilt.android.testing)
+    testImplementation(libs.junit)
     testImplementation(libs.robolectric)
     testImplementation(projects.core.testing)
+    testImplementation(kotlin("test-junit"))
     testImplementation(kotlin("test"))
 
     // Android Instrumented Tests
