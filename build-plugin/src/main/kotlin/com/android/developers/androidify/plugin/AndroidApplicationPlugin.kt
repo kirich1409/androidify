@@ -18,20 +18,20 @@ class AndroidApplicationPlugin : Plugin<Project> {
             apply(plugin = "org.jetbrains.kotlin.plugin.compose")
 
             extensions.configure<ApplicationExtension> {
-                defaultConfig {
+                defaultConfig.apply {
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 }
-                compileOptions {
+                compileOptions.apply {
                     val javaVersion = JavaVersion.toVersion(getVersionByName("javaVersion"))
                     sourceCompatibility = javaVersion
                     targetCompatibility = javaVersion
                 }
-                buildFeatures {
+                buildFeatures.apply {
                     compose = true
                 }
             }
             extensions.configure<KotlinAndroidProjectExtension> {
-                compilerOptions {
+                compilerOptions.apply {
                     jvmTarget = JvmTarget.fromTarget(getVersionByName("javaVersion"))
                 }
             }

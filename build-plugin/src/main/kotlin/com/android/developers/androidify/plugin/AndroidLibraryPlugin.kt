@@ -17,14 +17,14 @@ class AndroidLibraryPlugin : Plugin<Project> {
             apply(plugin = "org.jetbrains.kotlin.android")
 
             extensions.configure<LibraryExtension> {
-                compileOptions {
+                compileOptions.apply {
                     val javaVersion = JavaVersion.toVersion(getVersionByName("javaVersion"))
                     sourceCompatibility = javaVersion
                     targetCompatibility = javaVersion
                 }
             }
             extensions.configure<KotlinAndroidProjectExtension> {
-                compilerOptions {
+                compilerOptions.apply {
                     jvmTarget = JvmTarget.fromTarget(getVersionByName("javaVersion"))
                 }
             }

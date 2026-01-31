@@ -12,7 +12,7 @@ class AndroidComposeLibraryPlugin : Plugin<Project> {
             apply(plugin = "androidify.androidLibrary")
             apply(plugin = "org.jetbrains.kotlin.plugin.compose")
             extensions.configure<LibraryExtension> {
-                defaultConfig {
+                defaultConfig.apply {
                     testInstrumentationRunner = "com.android.developers.testing.AndroidifyTestRunner"
                 }
                 buildFeatures.compose = true
