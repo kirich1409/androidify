@@ -87,6 +87,9 @@ android {
 
 baselineProfile() {
     dexLayoutOptimization = true
+    warnings {
+        maxAgpVersion = false
+    }
 }
 
 spdxSbom {
